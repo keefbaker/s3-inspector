@@ -6,9 +6,13 @@ Forked Tool to check AWS S3 bucket permissions
 
 This forked version assumed python prerequisites are installed, doesn't print ok buckets and takes away verbose errors at the end as well as a general refactor.
 
+Also it allows you to add "ignored buckets" that you know are public.
+
+The idea of this fork is that it should run "clean" if configured with expected public buckets.
+
 ## What it does
  - Checks all your buckets for public access
- - For every bucket gives you the report with:
+ - For "bad" buckets gives you the report with:
    - Indicator if your bucket is public or not
    - Permissions for your bucket if it is public
    - List of URLs to access your bucket (non-public buckets will return Access Denied) if it is public
