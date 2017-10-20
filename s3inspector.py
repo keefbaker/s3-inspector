@@ -7,6 +7,8 @@ import termcolor
 
 from collections import defaultdict
 
+ignored_buckets = []
+
 def grantchecker(grant, grants, explained, groups_to_check):
     permissions = grants[grant]
     perm_to_print = [explained[perm]
@@ -24,11 +26,12 @@ def bucketcheck(bucket, bucketcount,
     }
     seperator = '-' * 40
     location = get_location(bucket.name, s3_client)
-    print(seperator)
+
     acl = bucket.Acl()
     public, grants = check_acl(acl, groups_to_check)
 
     if public:
+        print(seperator)
         bucket_line = termcolor.colored(
             bucket.name, 'blue', attrs=['bold'])
         public_ind = termcolor.colored(
@@ -46,13 +49,14 @@ def bucketcheck(bucket, bucketcount,
         else:
             print('Nothing found')
     else:
-        bucket_line = termcolor.colored(
-            bucket.name, 'blue', attrs=['bold'])
-        public_ind = termcolor.colored(
-            'Not public', 'green', attrs=['bold'])
-        termcolor.cprint('Bucket {}: {}'.format(
-            bucket_line, public_ind))
-        print('Location: {}'.format(location))
+        # bucket_line = termcolor.colored(
+        #     bucket.name, 'blue', attrs=['bold'])
+        # public_ind = termcolor.colored(
+        #     'Not public', 'green', attrs=['bold'])
+        # termcolor.cprint('Bucket {}: {}'.format(
+        #     bucket_line, public_ind))
+        # print('Location: {}'.format(location))
+        pass
     bucketcount += 1
     return bucketcount
 
@@ -105,8 +109,9 @@ def bucketloop():
     bucketcount = 0
     buckets, s3_client = bucketlist()
     for bucket in buckets:
-        bucketcount = bucketcheck(bucket, bucketcount,
-                                  s3_client, explained)
+        if bucket.name not in ignored_buckets:
+            bucketcount = bucketcheck(bucket, bucketcount,
+                                      s3_client, explained)
     if not bucketcount:
         print('No buckets found')
         termcolor.cprint(termcolor.colored('You are safe', 'green'))
