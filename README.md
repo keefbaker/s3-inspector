@@ -2,7 +2,9 @@
    <img alt="S3 Inspector" src="https://github.com/kromtech/s3-inspector/blob/logo/logo.png" width="400"/>
 </p>
 
-Tool to check AWS S3 bucket permissions
+Forked Tool to check AWS S3 bucket permissions
+
+This forked version assumed python prerequisites are installed, doesn't print ok buckets and takes away verbose errors at the end as well as a general refactor.
 
 ## What it does
  - Checks all your buckets for public access
